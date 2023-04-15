@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  backend:
+    container_name: 'backend'
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    env_file: ./backend/.env
+    restart: on-failure
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: 'database'
+    image: postgres:12.12-alpine
+    restart: on-failure
+    env_file: ./backend/.env
+    ports:
+      - ${POSTGRES_PORT:-5432}:5432
+  
+  frontend:
+    container_name: 'frontend'
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+      - '8081:80'
+    depends_on:
+      - backend
