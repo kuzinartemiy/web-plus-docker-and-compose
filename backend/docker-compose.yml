@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  backend:
+    image: "kupipodariday-backend"
+    ports:
+      - "3000:3000"
+  postgres:
+    image: "postgres:12"
+    environment:
+      POSTGRES_PASSWORD: student
