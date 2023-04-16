@@ -2,7 +2,7 @@
 FROM node:16-alpine as builder
 WORKDIR /app
 COPY package*.json ./
-RUN npm i
+RUN npm ci
 COPY . .
 RUN npm run build
 
@@ -10,12 +10,12 @@ RUN npm run build
 FROM node:16-alpine as production
 WORKDIR /app
 COPY --from=builder /app/package*.json ./
-RUN npm i --omit=dev && npm i pm2 -g
+RUN npm ci --omit=dev && npm i pm2 -g
 COPY --from=builder /app/dist/ .
 COPY --from=builder /app/ecosystem.config.js .
 COPY .env .
 
 # Remove dev dependencies
-RUN npm prune --production
+RUN npm ci --omit=dev
 EXPOSE 3000
 CMD ["pm2-runtime", "start", "ecosystem.config.js"]

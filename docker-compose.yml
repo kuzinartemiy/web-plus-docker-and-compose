@@ -20,7 +20,7 @@ services:
     env_file: ./backend/.env
     ports:
       - ${POSTGRES_PORT:-5432}:5432
-  
+    
   frontend:
     container_name: 'frontend'
     build:
